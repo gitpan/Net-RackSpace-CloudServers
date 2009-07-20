@@ -9,7 +9,7 @@ WriteMakefile(
   NAME      => 'Net::RackSpace::CloudServers',
   AUTHOR    => 'Marco\ Fontani',
   ABSTRACT  => 'Interface\ to\ RackSpace\ CloudServers\ via\ API',
-  VERSION   => '0.05_00',
+  VERSION   => '0.06_00',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

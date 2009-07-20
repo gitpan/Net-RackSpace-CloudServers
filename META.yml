@@ -15,4 +15,4 @@ requires:
   Moose: 0.87
   MooseX::StrictConstructor: 0
   YAML: 0
-version: 0.05_00
+version: 0.06_00

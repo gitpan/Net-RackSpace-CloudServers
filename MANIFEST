@@ -16,6 +16,7 @@ scripts/list_flavors.pl
 scripts/list_images.pl
 scripts/list_limits.pl
 scripts/list_servers.pl
+scripts/newserver.pl
 scripts/serverinfo.pl
 t/00-load.t
 t/boilerplate.t
