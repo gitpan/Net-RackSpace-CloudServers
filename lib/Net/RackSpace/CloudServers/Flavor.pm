@@ -1,5 +1,5 @@
 package Net::RackSpace::CloudServers::Flavor;
-our $VERSION = '0.09_10';
+our $VERSION = '0.09_20';
 
 use warnings;
 use strict;
@@ -21,7 +21,7 @@ Net::RackSpace::CloudServers::Flavor - a RackSpace CloudServers Flavor
 
 =head1 VERSION
 
-version 0.09_10
+version 0.09_20
 
 =head1 SYNOPSIS
 

@@ -2,7 +2,7 @@
 abstract: 'Interface to RackSpace CloudServers via API'
 author:
   - 'Marco Fontani'
-generated_by: 'Dist::Zilla version 1.093160'
+generated_by: 'Dist::Zilla version 1.093250'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -16,4 +16,5 @@ requires:
   Moose: 0.87
   MooseX::StrictConstructor: 0
   YAML: 0
-version: 0.09_10
+  perl: 5.010_000
+version: 0.09_20

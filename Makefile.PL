@@ -2,6 +2,8 @@
 use strict;
 use warnings;
 
+ BEGIN { require 5.010_000; } 
+
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
@@ -9,7 +11,7 @@ WriteMakefile(
   NAME      => 'Net::RackSpace::CloudServers',
   AUTHOR    => "Marco\ Fontani",
   ABSTRACT  => "Interface\ to\ RackSpace\ CloudServers\ via\ API",
-  VERSION   => '0.09_10',
+  VERSION   => '0.09_20',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

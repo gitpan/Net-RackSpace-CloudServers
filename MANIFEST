@@ -3,7 +3,6 @@ LICENSE
 MANIFEST
 META.yml
 Makefile.PL
-Net-RackSpace-CloudServers.kpf
 README
 TODO
 dist.ini

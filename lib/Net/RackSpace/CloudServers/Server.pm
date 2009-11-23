@@ -1,5 +1,5 @@
 package Net::RackSpace::CloudServers::Server;
-our $VERSION = '0.09_10';
+our $VERSION = '0.09_20';
 
 use warnings;
 use strict;
@@ -127,7 +127,7 @@ Net::RackSpace::CloudServers::Server - a RackSpace CloudServers Server instance
 
 =head1 VERSION
 
-version 0.09_10
+version 0.09_20
 
 =head1 SYNOPSIS
 

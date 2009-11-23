@@ -1,5 +1,5 @@
 package Net::RackSpace::CloudServers::Limits;
-our $VERSION = '0.09_10';
+our $VERSION = '0.09_20';
 
 use warnings;
 use strict;
@@ -65,11 +65,11 @@ sub refresh {
 
 =head1 NAME
 
-Net::RackSpace::CloudServers::Limits- a RackSpace CloudServers Limits instance
+Net::RackSpace::CloudServers::Limits - a RackSpace CloudServers Limits instance
 
 =head1 VERSION
 
-version 0.09_10
+version 0.09_20
 
 =head1 SYNOPSIS
 
