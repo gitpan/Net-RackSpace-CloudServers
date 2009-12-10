@@ -1,11 +1,9 @@
 package Net::RackSpace::CloudServers::Limits;
-our $VERSION = '0.09_20';
-
+our $VERSION = '0.09_40';
 use warnings;
 use strict;
 our $DEBUG = 0;
-use Moose;
-use MooseX::StrictConstructor;
+use Any::Moose;
 use HTTP::Request;
 use JSON;
 use YAML;
@@ -16,7 +14,7 @@ has 'maxipgroups'  => ( is => 'rw', isa => 'Int', );
 has 'maxipgroupmembers' => ( is => 'rw', isa => 'Int', );
 has 'rate'              => ( is => 'rw', isa => 'Maybe[ArrayRef]', );
 
-no Moose;
+no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 
 sub BUILD {
@@ -69,7 +67,7 @@ Net::RackSpace::CloudServers::Limits - a RackSpace CloudServers Limits instance
 
 =head1 VERSION
 
-version 0.09_20
+version 0.09_40
 
 =head1 SYNOPSIS
 

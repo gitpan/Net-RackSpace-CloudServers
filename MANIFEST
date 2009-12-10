@@ -13,6 +13,8 @@ lib/Net/RackSpace/CloudServers/Limits.pm
 lib/Net/RackSpace/CloudServers/Server.pm
 scripts/changename.pl
 scripts/changerootpass.pl
+scripts/create_image.pl
+scripts/delete_image.pl
 scripts/deleteserver.pl
 scripts/list_flavors.pl
 scripts/list_images.pl

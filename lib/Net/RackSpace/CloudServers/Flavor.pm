@@ -1,10 +1,8 @@
 package Net::RackSpace::CloudServers::Flavor;
-our $VERSION = '0.09_20';
-
+our $VERSION = '0.09_40';
 use warnings;
 use strict;
-use Moose;
-use MooseX::StrictConstructor;
+use Any::Moose;
 
 has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
 has 'id'           => ( is => 'ro', isa => 'Int',                          required => 1 );
@@ -12,7 +10,7 @@ has 'name'         => ( is => 'ro', isa => 'Str',                          requi
 has 'ram'          => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
 has 'disk'         => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
 
-no Moose;
+no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
@@ -21,7 +19,7 @@ Net::RackSpace::CloudServers::Flavor - a RackSpace CloudServers Flavor
 
 =head1 VERSION
 
-version 0.09_20
+version 0.09_40
 
 =head1 SYNOPSIS
 
@@ -32,7 +30,7 @@ version 0.09_20
     cloudservers => $cs,
     id => '1', name => 'test', ram => 5, disk => 10,
   );
-  # get list: 
+  # get list:
   my @flavors = $cs->flavors;
   foreach my $flavor ( @flavors ) {
     print 'Have flavor ', $flavor->name, ' id ', $flavor->id, "\n";
@@ -55,7 +53,7 @@ The constructor creates a Flavor:
     cloudserver => $cs
     id => 'id', name => 'name',
   );
-  
+
 This normally gets created for you by L<Net::RackSpace::Cloudserver>'s L<flavors> or L<flavorsdetails> methods.
 Needs a Net::RackSpace::CloudServers::Flavor object.
 

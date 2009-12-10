@@ -1,29 +1,30 @@
 package Net::RackSpace::CloudServers::Server;
-our $VERSION = '0.09_20';
-
+our $VERSION = '0.09_40';
 use warnings;
 use strict;
 our $DEBUG = 0;
-use Moose;
-use MooseX::StrictConstructor;
+use Any::Moose;
 use HTTP::Request;
 use JSON;
 use YAML;
+use Net::RackSpace::CloudServers::Image;
 
-has 'cloudservers'    => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
-has 'id'              => ( is => 'ro', isa => 'Int',                          required => 1 );
-has 'name'            => ( is => 'ro', isa => 'Str',                          required => 1 );
-has 'imageid'         => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
-has 'flavorid'        => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
-has 'hostid'          => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'status'          => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'adminpass'       => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'progress'        => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'public_address'  => ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]',         required => 1 );
-has 'private_address' => ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]',         required => 1 );
-has 'metadata'        => ( is => 'ro', isa => 'Maybe[HashRef]',               required => 1 );
+has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
+has 'id'       => ( is => 'ro', isa => 'Int',        required => 1, default => 0 );
+has 'name'     => ( is => 'ro', isa => 'Str',        required => 1 );
+has 'imageid'  => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
+has 'flavorid' => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
+has 'hostid'    => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'status'    => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'adminpass' => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'progress'  => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'public_address' =>
+  ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]', required => 1, default => undef );
+has 'private_address' =>
+  ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]', required => 1, default => undef );
+has 'metadata' => ( is => 'ro', isa => 'Maybe[HashRef]', required => 1, default => undef );
 
-no Moose;
+no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 
 sub change_root_password {
@@ -77,6 +78,45 @@ sub delete_server {
   return;
 }
 
+sub create_image {
+  my $self    = shift;
+  my $imgname = shift;
+  my $request = HTTP::Request->new(
+    'POST',
+    $self->cloudservers->server_management_url . '/images',
+    [
+      'X-Auth-Token' => $self->cloudservers->token,
+      'Content-Type' => 'application/json',
+    ],
+    to_json(
+      {
+        image => {
+          serverId => $self->id,
+          name     => $imgname,
+        }
+      }
+    )
+  );
+  my $response = $self->cloudservers->_request($request);
+  if ( $response->code != 202 ) {
+    confess 'Unknown error ' . $response->code, "\n", Dump( $response->content );
+  }
+  my $hash_response = from_json( $response->content );
+  if ( !defined $hash_response->{image} ) {
+    confess 'response does not contain "image":', Dump($hash_response);
+  }
+  return Net::RackSpace::CloudServers::Image->new(
+    cloudservers => $self->cloudservers,
+    id           => $hash_response->{image}->{id},
+    serverid     => $hash_response->{image}->{serverId},
+    name         => $hash_response->{image}->{name},
+    created      => $hash_response->{image}->{created},
+    status       => $hash_response->{image}->{status},
+    progress     => $hash_response->{image}->{status},
+    updated      => undef,
+  );
+}
+
 sub create_server {
   my $self    = shift;
   my $request = HTTP::Request->new(
@@ -127,7 +167,7 @@ Net::RackSpace::CloudServers::Server - a RackSpace CloudServers Server instance
 
 =head1 VERSION
 
-version 0.09_20
+version 0.09_40
 
 =head1 SYNOPSIS
 
@@ -138,7 +178,7 @@ version 0.09_20
     cloudservers => $cs,
     id => '1', name => 'test',
   );
-  # get list: 
+  # get list:
   my @servers = $cs->get_server;
   foreach my $server ( @servers ) {
     print 'Have server ', $server->name, ' id ', $server->id, "\n";
@@ -170,9 +210,9 @@ The constructor creates a Server object, see L<create_server> to create a server
     cloudserver => $cs
     id => 'id', name => 'name',
   );
-  
+
 This normally gets created for you by L<Net::RackSpace::Cloudserver>'s L<get_server> or L<get_server_detail> methods.
-Needs a Net::RackSpace::CloudServers object as B<cloudserver> parameter.
+Needs a Net::RackSpace::CloudServers object as B<cloudservers> parameter.
 
 =head2 create_server
 
@@ -195,6 +235,13 @@ Changes the server's name to the new value given. Dies on error, or returns the 
 Changes the server's root password to the new value given. Dies on error, or returns the response
 
   $srv->change_root_password('toor');
+
+=head2 create_image
+
+Creates a named backup image of the current server. Returns the newly created
+C<Net::RackSpace::CloudServers::Image> object, which includes the new image's C<id>.
+
+  $srv->create_image("test backup 001");
 
 =head1 ATTRIBUTES
 

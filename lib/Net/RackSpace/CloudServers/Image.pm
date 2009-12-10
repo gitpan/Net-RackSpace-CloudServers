@@ -1,10 +1,8 @@
 package Net::RackSpace::CloudServers::Image;
-our $VERSION = '0.09_20';
-
+our $VERSION = '0.09_40';
 use warnings;
 use strict;
-use Moose;
-use MooseX::StrictConstructor;
+use Any::Moose;
 
 has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
 has 'id'           => ( is => 'ro', isa => 'Int',                          required => 1 );
@@ -15,7 +13,7 @@ has 'created'      => ( is => 'ro', isa => 'Maybe[Str]',                   requi
 has 'status'       => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
 has 'progress'     => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
 
-no Moose;
+no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 
 =head1 NAME
@@ -24,7 +22,7 @@ Net::RackSpace::CloudServers::Image - a RackSpace CloudServers Image
 
 =head1 VERSION
 
-version 0.09_20
+version 0.09_40
 
 =head1 SYNOPSIS
 
@@ -35,7 +33,7 @@ version 0.09_20
     cloudservers => $cs,
     id => '1', name => 'test',
   );
-  # get list: 
+  # get list:
   my @images = $cs->get_image();
   foreach my $image ( @images ) {
     print 'Have image ', $image->name, ' id ', $image->id, "\n";
@@ -59,7 +57,7 @@ The constructor creates an Image:
     cloudserver => $cs
     id => 'id', name => 'name',
   );
-  
+
 This normally gets created for you by L<Net::RackSpace::Cloudserver>'s L<get_image> or L<get_image_details> methods.
 Needs a Net::RackSpace::CloudServers object.
 

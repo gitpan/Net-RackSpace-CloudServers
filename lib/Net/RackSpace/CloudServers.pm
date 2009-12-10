@@ -1,10 +1,8 @@
 package Net::RackSpace::CloudServers;
-our $VERSION = '0.09_20';
-
+our $VERSION = '0.09_40';
 use warnings;
 use strict;
-use Moose;
-use MooseX::StrictConstructor;
+use Any::Moose;
 use Net::RackSpace::CloudServers::Flavor;
 use Net::RackSpace::CloudServers::Server;
 use Net::RackSpace::CloudServers::Image;
@@ -46,7 +44,7 @@ has 'storage_url' => (
 has 'cdn_management_url' => ( is => 'rw', isa => 'Str', required => 0 );
 has 'token'              => ( is => 'rw', isa => 'Str', required => 0 );
 
-no Moose;
+no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 
 # copied from Net::Mosso::CloudFiles
@@ -285,6 +283,7 @@ sub get_image {
     ? ( defined $id ? '/images/' . $id : '/images/detail' )
     : ( defined $id ? '/images/' . $id : '/images' )
   );
+  $uri .= '?changes_since=0';
   my $request = HTTP::Request->new(
     'GET',
     $self->server_management_url . $uri,
@@ -335,13 +334,29 @@ sub get_image_detail {
   return $self->get_image( $id, 1 );
 }
 
+sub delete_image {
+  my $self    = shift;
+  my $id      = shift;
+  my $request = HTTP::Request->new(
+    'DELETE',
+    $self->server_management_url . '/images/' . $id,
+    [
+      'X-Auth-Token' => $self->token,
+      'Content-Type' => 'application/json',
+    ],
+  );
+  my $response = $self->_request($request);
+  confess 'Unknown error ' . $response->code unless ( $response->code ~~ [ 202, 204 ] );
+  return;
+}
+
 =head1 NAME
 
 Net::RackSpace::CloudServers - Interface to RackSpace CloudServers via API
 
 =head1 VERSION
 
-version 0.09_20
+version 0.09_40
 
 =head1 SYNOPSIS
 
@@ -427,6 +442,11 @@ Lists details of all the server/backup images able to be used. If no ID is passe
 returns an array of L<Net::RackSpace::CloudServers::Image>. All details are returned back: B<id>, B<name>,
 B<serverid>, B<updated>, B<created>, B<status> and B<progress>. If an ID is passed as parameter,
 it will return a L<Net::RackSpace::CloudServers::Image> object with all details filled in.
+
+=head2 delete_image
+
+Deletes a previously created backup image. Needs the image ID passed as parameter, returns undef
+in case of success or confess()es in case of error.
 
 =head1 AUTHOR
 
