@@ -1,5 +1,8 @@
 package Net::RackSpace::CloudServers::Server;
-our $VERSION = '0.09_40';
+
+BEGIN {
+    $Net::RackSpace::CloudServers::Server::VERSION = '0.10';
+}
 use warnings;
 use strict;
 our $DEBUG = 0;
@@ -22,143 +25,147 @@ has 'public_address' =>
   ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]', required => 1, default => undef );
 has 'private_address' =>
   ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]', required => 1, default => undef );
-has 'metadata' => ( is => 'ro', isa => 'Maybe[HashRef]', required => 1, default => undef );
+has 'metadata'    => ( is => 'ro', isa => 'Maybe[HashRef]',  required => 1, default => undef );
+has 'personality' => ( is => 'ro', isa => 'Maybe[ArrayRef]', required => 1, default => undef );
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable();
 
 sub change_root_password {
-  my $self     = shift;
-  my $password = shift;
-  my $uri      = '/servers/' . $self->id;
-  my $request  = HTTP::Request->new(
-    'PUT',
-    $self->cloudservers->server_management_url . $uri,
-    [
-      'X-Auth-Token' => $self->cloudservers->token,
-      'Content-Type' => 'application/json',
-    ],
-    to_json( { server => { adminPass => $password, } } )
-  );
-  my $response = $self->cloudservers->_request($request);
-  confess 'Unknown error' if $response->code != 202;
-  return $response;
+    my $self     = shift;
+    my $password = shift;
+    my $uri      = '/servers/' . $self->id;
+    my $request  = HTTP::Request->new(
+        'PUT',
+        $self->cloudservers->server_management_url . $uri,
+        [
+            'X-Auth-Token' => $self->cloudservers->token,
+            'Content-Type' => 'application/json',
+        ],
+        to_json( { server => { adminPass => $password, } } )
+    );
+    my $response = $self->cloudservers->_request($request);
+    confess 'Unknown error' if $response->code != 202;
+    return $response;
 }
 
 sub change_name {
-  my $self    = shift;
-  my $name    = shift;
-  my $uri     = '/servers/' . $self->id;
-  my $request = HTTP::Request->new(
-    'PUT',
-    $self->cloudservers->server_management_url . $uri,
-    [
-      'X-Auth-Token' => $self->cloudservers->token,
-      'Content-Type' => 'application/json',
-    ],
-    to_json( { server => { name => $name, } } )
-  );
-  my $response = $self->cloudservers->_request($request);
-  confess 'Unknown error' if $response->code != 202;
-  return $response;
+    my $self    = shift;
+    my $name    = shift;
+    my $uri     = '/servers/' . $self->id;
+    my $request = HTTP::Request->new(
+        'PUT',
+        $self->cloudservers->server_management_url . $uri,
+        [
+            'X-Auth-Token' => $self->cloudservers->token,
+            'Content-Type' => 'application/json',
+        ],
+        to_json( { server => { name => $name, } } )
+    );
+    my $response = $self->cloudservers->_request($request);
+    confess 'Unknown error' if $response->code != 202;
+    return $response;
 }
 
 sub delete_server {
-  my $self    = shift;
-  my $request = HTTP::Request->new(
-    'DELETE',
-    $self->cloudservers->server_management_url . '/servers/' . $self->id,
-    [
-      'X-Auth-Token' => $self->cloudservers->token,
-      'Content-Type' => 'application/json',
-    ],
-  );
-  my $response = $self->cloudservers->_request($request);
-  confess 'Unknown error' if $response->code != 202;
-  return;
+    my $self    = shift;
+    my $request = HTTP::Request->new(
+        'DELETE',
+        $self->cloudservers->server_management_url . '/servers/' . $self->id,
+        [
+            'X-Auth-Token' => $self->cloudservers->token,
+            'Content-Type' => 'application/json',
+        ],
+    );
+    my $response = $self->cloudservers->_request($request);
+    confess 'Unknown error' if $response->code != 202;
+    return;
 }
 
 sub create_image {
-  my $self    = shift;
-  my $imgname = shift;
-  my $request = HTTP::Request->new(
-    'POST',
-    $self->cloudservers->server_management_url . '/images',
-    [
-      'X-Auth-Token' => $self->cloudservers->token,
-      'Content-Type' => 'application/json',
-    ],
-    to_json(
-      {
-        image => {
-          serverId => $self->id,
-          name     => $imgname,
-        }
-      }
-    )
-  );
-  my $response = $self->cloudservers->_request($request);
-  if ( $response->code != 202 ) {
-    confess 'Unknown error ' . $response->code, "\n", Dump( $response->content );
-  }
-  my $hash_response = from_json( $response->content );
-  if ( !defined $hash_response->{image} ) {
-    confess 'response does not contain "image":', Dump($hash_response);
-  }
-  return Net::RackSpace::CloudServers::Image->new(
-    cloudservers => $self->cloudservers,
-    id           => $hash_response->{image}->{id},
-    serverid     => $hash_response->{image}->{serverId},
-    name         => $hash_response->{image}->{name},
-    created      => $hash_response->{image}->{created},
-    status       => $hash_response->{image}->{status},
-    progress     => $hash_response->{image}->{status},
-    updated      => undef,
-  );
+    my $self    = shift;
+    my $imgname = shift;
+    my $request = HTTP::Request->new(
+        'POST',
+        $self->cloudservers->server_management_url . '/images',
+        [
+            'X-Auth-Token' => $self->cloudservers->token,
+            'Content-Type' => 'application/json',
+        ],
+        to_json(
+            {
+                image => {
+                    serverId => $self->id,
+                    name     => $imgname,
+                }
+            }
+        )
+    );
+    my $response = $self->cloudservers->_request($request);
+    if ( $response->code != 202 ) {
+        confess 'Unknown error ' . $response->code, "\n", Dump( $response->content );
+    }
+    my $hash_response = from_json( $response->content );
+    if ( !defined $hash_response->{image} ) {
+        confess 'response does not contain "image":', Dump($hash_response);
+    }
+    return Net::RackSpace::CloudServers::Image->new(
+        cloudservers => $self->cloudservers,
+        id           => $hash_response->{image}->{id},
+        serverid     => $hash_response->{image}->{serverId},
+        name         => $hash_response->{image}->{name},
+        created      => $hash_response->{image}->{created},
+        status       => $hash_response->{image}->{status},
+        progress     => $hash_response->{image}->{status},
+        updated      => undef,
+    );
 }
 
 sub create_server {
-  my $self    = shift;
-  my $request = HTTP::Request->new(
-    'POST',
-    $self->cloudservers->server_management_url . '/servers',
-    [
-      'X-Auth-Token' => $self->cloudservers->token,
-      'Content-Type' => 'application/json',
-    ],
-    to_json(
-      {
-        server => {
-          name     => $self->name,
-          imageId  => int $self->imageid,
-          flavorId => int $self->flavorid,
-        }
-      }
-    )
-  );
-  my $response = $self->cloudservers->_request($request);
-  confess 'Unknown error' if $response->code != 202;
-  my $hash_response = from_json( $response->content );
-  warn Dump($hash_response) if $DEBUG;
-  confess 'response does not contain key "server"'
-    if ( !defined $hash_response->{server} );
-  confess 'response does not contain hashref of "server"'
-    if ( ref $hash_response->{server} ne 'HASH' );
-  my $hserver = $hash_response->{server};
-  return __PACKAGE__->new(
-    cloudservers    => $self->cloudservers,
-    adminpass       => $hserver->{adminPass},
-    id              => $hserver->{id},
-    name            => $hserver->{name},
-    imageid         => $hserver->{imageId},
-    flavorid        => $hserver->{flavorId},
-    hostid          => $hserver->{hostId},
-    status          => $hserver->{status},
-    progress        => $hserver->{progress},
-    public_address  => $hserver->{addresses}->{public},
-    private_address => $hserver->{addresses}->{private},
-    metadata        => $hserver->{metadata},
-  );
+    my $self    = shift;
+    my $request = HTTP::Request->new(
+        'POST',
+        $self->cloudservers->server_management_url . '/servers',
+        [
+            'X-Auth-Token' => $self->cloudservers->token,
+            'Content-Type' => 'application/json',
+        ],
+        to_json(
+            {
+                server => {
+                    name     => $self->name,
+                    imageId  => int $self->imageid,
+                    flavorId => int $self->flavorid,
+                    defined $self->metadata    ? ( metadata    => $self->metadata )    : (),
+                    defined $self->personality ? ( personality => $self->personality ) : (),
+                }
+            }
+        )
+    );
+    my $response = $self->cloudservers->_request($request);
+    confess 'Unknown error' if $response->code != 202;
+    my $hash_response = from_json( $response->content );
+    warn Dump($hash_response) if $DEBUG;
+    confess 'response does not contain key "server"'
+      if ( !defined $hash_response->{server} );
+    confess 'response does not contain hashref of "server"'
+      if ( ref $hash_response->{server} ne 'HASH' );
+    my $hserver = $hash_response->{server};
+    return __PACKAGE__->new(
+        cloudservers    => $self->cloudservers,
+        adminpass       => $hserver->{adminPass},
+        id              => $hserver->{id},
+        name            => $hserver->{name},
+        imageid         => $hserver->{imageId},
+        flavorid        => $hserver->{flavorId},
+        hostid          => $hserver->{hostId},
+        status          => $hserver->{status},
+        progress        => $hserver->{progress},
+        public_address  => $hserver->{addresses}->{public},
+        private_address => $hserver->{addresses}->{private},
+        metadata        => $hserver->{metadata},
+        personality     => $hserver->{personality},
+    );
 }
 
 =head1 NAME
@@ -167,7 +174,7 @@ Net::RackSpace::CloudServers::Server - a RackSpace CloudServers Server instance
 
 =head1 VERSION
 
-version 0.09_40
+version 0.10
 
 =head1 SYNOPSIS
 

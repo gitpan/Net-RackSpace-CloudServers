@@ -1,5 +1,8 @@
 package Net::RackSpace::CloudServers::Image;
-our $VERSION = '0.09_40';
+
+BEGIN {
+    $Net::RackSpace::CloudServers::Image::VERSION = '0.10';
+}
 use warnings;
 use strict;
 use Any::Moose;
@@ -22,7 +25,7 @@ Net::RackSpace::CloudServers::Image - a RackSpace CloudServers Image
 
 =head1 VERSION
 
-version 0.09_40
+version 0.10
 
 =head1 SYNOPSIS
 

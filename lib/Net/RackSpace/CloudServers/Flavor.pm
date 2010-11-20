@@ -1,5 +1,8 @@
 package Net::RackSpace::CloudServers::Flavor;
-our $VERSION = '0.09_40';
+
+BEGIN {
+    $Net::RackSpace::CloudServers::Flavor::VERSION = '0.10';
+}
 use warnings;
 use strict;
 use Any::Moose;
@@ -19,7 +22,7 @@ Net::RackSpace::CloudServers::Flavor - a RackSpace CloudServers Flavor
 
 =head1 VERSION
 
-version 0.09_40
+version 0.10
 
 =head1 SYNOPSIS
 

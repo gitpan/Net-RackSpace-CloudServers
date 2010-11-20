@@ -10,8 +10,8 @@ my $key  = $ENV{'CLOUDSERVERS_KEY'}  or die "Need CLOUDSERVERS_KEY environment v
 $Net::RackSpace::CloudServers::DEBUG = 1;
 warn "** Creating Net::RackSpace::CloudServers object..\n";
 my $CS = Net::RackSpace::CloudServers->new(
-  user => $user,
-  key  => $key,
+    user => $user,
+    key  => $key,
 );
 warn "** \$CS->get_server()..\n";
 $CS->get_server();

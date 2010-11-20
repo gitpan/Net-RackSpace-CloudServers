@@ -2,26 +2,55 @@
 use strict;
 use warnings;
 
- BEGIN { require 5.010_000; } 
+BEGIN { require 5.010_000; }
 
-use ExtUtils::MakeMaker;
+use ExtUtils::MakeMaker 6.31;
 
-WriteMakefile(
-  DISTNAME  => 'Net-RackSpace-CloudServers',
-  NAME      => 'Net::RackSpace::CloudServers',
-  AUTHOR    => "Marco\ Fontani",
-  ABSTRACT  => "Interface\ to\ RackSpace\ CloudServers\ via\ API",
-  VERSION   => '0.09_40',
-  EXE_FILES => [ qw() ],
-  (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'perl') : ()),
-  PREREQ_PM    => {
-    "YAML" => '0',
-    "LWP::ConnCache::MaxKeepAliveRequests" => '0',
-    "Any::Moose" => '0.10',
-    "LWP::UserAgent::Determined" => '0',
-    "JSON" => '0',
-    "HTTP::Request" => '0',
+
+
+my %WriteMakefileArgs = (
+  'ABSTRACT' => 'Interface to RackSpace CloudServers via API',
+  'AUTHOR' => 'Marco Fontani',
+  'BUILD_REQUIRES' => {},
+  'CONFIGURE_REQUIRES' => {
+    'ExtUtils::MakeMaker' => '6.31'
   },
-  test => {TESTS => 't/*.t'}
+  'DISTNAME' => 'Net-RackSpace-CloudServers',
+  'EXE_FILES' => [],
+  'LICENSE' => 'perl',
+  'NAME' => 'Net::RackSpace::CloudServers',
+  'PREREQ_PM' => {
+    'Any::Moose' => '0.10',
+    'HTTP::Request' => '0',
+    'JSON' => '0',
+    'LWP::ConnCache::MaxKeepAliveRequests' => '0',
+    'LWP::UserAgent::Determined' => '0',
+    'YAML' => '0'
+  },
+  'VERSION' => '0.10',
+  'test' => {
+    'TESTS' => 't/*.t'
+  }
 );
+
+
+unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
+  my $br = delete $WriteMakefileArgs{BUILD_REQUIRES};
+  my $pp = $WriteMakefileArgs{PREREQ_PM};
+  for my $mod ( keys %$br ) {
+    if ( exists $pp->{$mod} ) {
+      $pp->{$mod} = $br->{$mod} if $br->{$mod} > $pp->{$mod};
+    }
+    else {
+      $pp->{$mod} = $br->{$mod};
+    }
+  }
+}
+
+delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
+  unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+WriteMakefile(%WriteMakefileArgs);
+
+
 

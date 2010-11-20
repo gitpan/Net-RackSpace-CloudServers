@@ -14,16 +14,16 @@ my $imgname = "@ARGV";
 die "Need a name for the new image\n" unless $imgname;
 
 my $CS = Net::RackSpace::CloudServers->new(
-  user => $user,
-  key  => $key,
+    user => $user,
+    key  => $key,
 );
 $Net::RackSpace::CloudServers::DEBUG         = 0;
 $Net::RackSpace::CloudServers::Server::DEBUG = 0;
 my $server;
 {
-  my @servers = $CS->get_server_detail($serverid);
-  die "Server id $serverid not found; exiting\n" unless @servers;
-  $server = $servers[0];
+    my @servers = $CS->get_server_detail($serverid);
+    die "Server id $serverid not found; exiting\n" unless @servers;
+    $server = $servers[0];
 }
 my $img      = $server->create_image($imgname);
 my $newimgid = $img->id;

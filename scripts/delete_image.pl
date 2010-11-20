@@ -11,8 +11,8 @@ my $imgid = shift or die "$0: need ID of image to be deleted\n";
 print "Will delete image ID $imgid\n";
 
 my $CS = Net::RackSpace::CloudServers->new(
-  user => $user,
-  key  => $key,
+    user => $user,
+    key  => $key,
 );
 $Net::RackSpace::CloudServers::DEBUG = 0;
 my $img = $CS->get_image_detail($imgid);

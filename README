@@ -1,12 +1,13 @@
 
 
-This archive contains the distribution Net-RackSpace-CloudServers, version
-0.09_40:
+This archive contains the distribution Net-RackSpace-CloudServers,
+version 0.10:
 
   Interface to RackSpace CloudServers via API
 
-This software is copyright (c) 2009 by Marco Fontani.
+This software is copyright (c) 2010 by Marco Fontani.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
+
 

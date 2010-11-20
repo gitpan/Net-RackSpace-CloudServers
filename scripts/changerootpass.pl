@@ -8,8 +8,8 @@ my $key  = $ENV{'CLOUDSERVERS_KEY'}  or die "Need CLOUDSERVERS_KEY environment v
 
 $Net::RackSpace::CloudServers::DEBUG = 1;
 my $CS = Net::RackSpace::CloudServers->new(
-  user => $user,
-  key  => $key,
+    user => $user,
+    key  => $key,
 );
 
 my @flavors = $CS->get_flavor_detail;

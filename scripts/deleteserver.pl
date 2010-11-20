@@ -11,8 +11,8 @@ my $serverid = shift or die "$0: need ID of server to be deleted\n";
 print "Will delete server ID $serverid\n";
 
 my $CS = Net::RackSpace::CloudServers->new(
-  user => $user,
-  key  => $key,
+    user => $user,
+    key  => $key,
 );
 $Net::RackSpace::CloudServers::DEBUG = 0;
 my @servers = $CS->get_server_detail;
