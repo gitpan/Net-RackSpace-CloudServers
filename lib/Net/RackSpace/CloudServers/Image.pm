@@ -1,11 +1,12 @@
 package Net::RackSpace::CloudServers::Image;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Image::VERSION = '0.10';
+    $Net::RackSpace::CloudServers::Image::VERSION = '0.11';
 }
 use warnings;
 use strict;
 use Any::Moose;
+use Carp;
 
 has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
 has 'id'           => ( is => 'ro', isa => 'Int',                          required => 1 );
@@ -25,7 +26,7 @@ Net::RackSpace::CloudServers::Image - a RackSpace CloudServers Image
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

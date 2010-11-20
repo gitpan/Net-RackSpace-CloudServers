@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Server;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Server::VERSION = '0.10';
+    $Net::RackSpace::CloudServers::Server::VERSION = '0.11';
 }
 use warnings;
 use strict;
@@ -11,6 +11,7 @@ use HTTP::Request;
 use JSON;
 use YAML;
 use Net::RackSpace::CloudServers::Image;
+use Carp;
 
 has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
 has 'id'       => ( is => 'ro', isa => 'Int',        required => 1, default => 0 );
@@ -174,7 +175,7 @@ Net::RackSpace::CloudServers::Server - a RackSpace CloudServers Server instance
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

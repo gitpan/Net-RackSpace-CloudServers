@@ -20,4 +20,4 @@ requires:
   LWP::UserAgent::Determined: 0
   YAML: 0
   perl: 5.010_000
-version: 0.10
+version: 0.11

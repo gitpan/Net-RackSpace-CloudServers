@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Limits;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Limits::VERSION = '0.10';
+    $Net::RackSpace::CloudServers::Limits::VERSION = '0.11';
 }
 use warnings;
 use strict;
@@ -10,6 +10,7 @@ use Any::Moose;
 use HTTP::Request;
 use JSON;
 use YAML;
+use Carp;
 
 has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
 has 'totalramsize' => ( is => 'rw', isa => 'Int', );
@@ -70,7 +71,7 @@ Net::RackSpace::CloudServers::Limits - a RackSpace CloudServers Limits instance
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
