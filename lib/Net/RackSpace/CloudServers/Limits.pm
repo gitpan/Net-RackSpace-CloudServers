@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Limits;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Limits::VERSION = '0.11';
+    $Net::RackSpace::CloudServers::Limits::VERSION = '0.12';
 }
 use warnings;
 use strict;
@@ -71,7 +71,7 @@ Net::RackSpace::CloudServers::Limits - a RackSpace CloudServers Limits instance
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SYNOPSIS
 

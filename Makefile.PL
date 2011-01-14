@@ -21,13 +21,14 @@ my %WriteMakefileArgs = (
   'NAME' => 'Net::RackSpace::CloudServers',
   'PREREQ_PM' => {
     'Any::Moose' => '0.10',
+    'Crypt::SSLeay' => '0',
     'HTTP::Request' => '0',
     'JSON' => '0',
     'LWP::ConnCache::MaxKeepAliveRequests' => '0',
     'LWP::UserAgent::Determined' => '0',
     'YAML' => '0'
   },
-  'VERSION' => '0.11',
+  'VERSION' => '0.12',
   'test' => {
     'TESTS' => 't/*.t'
   }

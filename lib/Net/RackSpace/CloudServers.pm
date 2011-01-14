@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::VERSION = '0.11';
+    $Net::RackSpace::CloudServers::VERSION = '0.12';
 }
 use warnings;
 use strict;
@@ -85,7 +85,8 @@ sub _authenticate {
     );
     my $response = $self->_request($request);
     confess 'Unauthorized' if $response->code == 401;
-    confess 'Unknown error ' . $response->code if $response->code != 204;
+    confess 'Unknown error ' . $response->code . "\n" . $response->content
+      if $response->code != 204;
 
     my $server_management_url = $response->header('X-Server-Management-Url')
       || confess 'Missing server management url';
@@ -360,7 +361,7 @@ Net::RackSpace::CloudServers - Interface to RackSpace CloudServers via API
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SYNOPSIS
 
