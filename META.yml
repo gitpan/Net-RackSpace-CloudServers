@@ -20,8 +20,8 @@ requires:
   LWP::ConnCache::MaxKeepAliveRequests: 0
   LWP::UserAgent::Determined: 0
   YAML: 0
-  perl: 5.010_000
+  perl: 5.008_008
 resources:
   bugtracker: https://github.com/mfontani/Net-RackSpace-CloudServers/issues
   repository: git://github.com/mfontani/Net-RackSpace-CloudServers.git
-version: 0.12
+version: 0.12_01

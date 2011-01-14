@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Limits;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Limits::VERSION = '0.12';
+    $Net::RackSpace::CloudServers::Limits::VERSION = '0.12_01';
 }
 use warnings;
 use strict;
@@ -35,7 +35,8 @@ sub refresh {
     );
     my $response = $self->cloudservers->_request($request);
     return if $response->code == 204;
-    confess 'Unknown error ' . $response->code unless ( $response->code ~~ [ 200, 203 ] );
+    confess 'Unknown error ' . $response->code
+      unless scalar grep { $response->code eq $_ } ( 200, 203 );
     my $hr = from_json( $response->content );
     warn Dump($hr) if $DEBUG;
 
@@ -71,7 +72,7 @@ Net::RackSpace::CloudServers::Limits - a RackSpace CloudServers Limits instance
 
 =head1 VERSION
 
-version 0.12
+version 0.12_01
 
 =head1 SYNOPSIS
 
