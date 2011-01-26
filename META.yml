@@ -6,7 +6,7 @@ build_requires: {}
 configure_requires:
   ExtUtils::MakeMaker: 6.31
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.200000, CPAN::Meta::Converter version 2.102400'
+generated_by: 'Dist::Zilla version 4.200001, CPAN::Meta::Converter version 2.110240'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -24,4 +24,4 @@ requires:
 resources:
   bugtracker: https://github.com/mfontani/Net-RackSpace-CloudServers/issues
   repository: git://github.com/mfontani/Net-RackSpace-CloudServers.git
-version: 0.12_01
+version: 0.12_02

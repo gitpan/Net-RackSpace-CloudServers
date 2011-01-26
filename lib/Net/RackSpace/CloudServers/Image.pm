@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Image;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Image::VERSION = '0.12_01';
+    $Net::RackSpace::CloudServers::Image::VERSION = '0.12_02';
 }
 use warnings;
 use strict;
@@ -26,7 +26,7 @@ Net::RackSpace::CloudServers::Image - a RackSpace CloudServers Image
 
 =head1 VERSION
 
-version 0.12_01
+version 0.12_02
 
 =head1 SYNOPSIS
 

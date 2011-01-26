@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::VERSION = '0.12_01';
+    $Net::RackSpace::CloudServers::VERSION = '0.12_02';
 }
 use warnings;
 use strict;
@@ -15,7 +15,6 @@ use LWP::UserAgent::Determined;
 use JSON;
 use YAML;
 use Carp;
-use 5.010_000;
 
 our $DEBUG = 0;
 
@@ -365,7 +364,7 @@ Net::RackSpace::CloudServers - Interface to RackSpace CloudServers via API
 
 =head1 VERSION
 
-version 0.12_01
+version 0.12_02
 
 =head1 SYNOPSIS
 
