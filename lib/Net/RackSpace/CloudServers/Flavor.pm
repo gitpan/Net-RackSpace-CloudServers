@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Flavor;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Flavor::VERSION = '0.12_02';
+    $Net::RackSpace::CloudServers::Flavor::VERSION = '0.13';
 }
 use warnings;
 use strict;
@@ -23,7 +23,7 @@ Net::RackSpace::CloudServers::Flavor - a RackSpace CloudServers Flavor
 
 =head1 VERSION
 
-version 0.12_02
+version 0.13
 
 =head1 SYNOPSIS
 
