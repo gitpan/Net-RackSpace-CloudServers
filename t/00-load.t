@@ -9,4 +9,6 @@ BEGIN {
     use_ok('Net::RackSpace::CloudServers::Server');
 }
 
-diag("Testing Net::RackSpace::CloudServers $Net::RackSpace::CloudServers::VERSION, Perl $], $^X");
+diag(
+"Testing Net::RackSpace::CloudServers $Net::RackSpace::CloudServers::VERSION, Perl $], $^X"
+);

@@ -1,18 +1,19 @@
 package Net::RackSpace::CloudServers::Flavor;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Flavor::VERSION = '0.13';
+    $Net::RackSpace::CloudServers::Flavor::VERSION = '0.14';
 }
 use warnings;
 use strict;
 use Any::Moose;
 use Carp;
 
-has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
-has 'id'           => ( is => 'ro', isa => 'Int',                          required => 1 );
-has 'name'         => ( is => 'ro', isa => 'Str',                          required => 1 );
-has 'ram'          => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
-has 'disk'         => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
+has 'cloudservers' =>
+  ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
+has 'id'   => ( is => 'ro', isa => 'Int',        required => 1 );
+has 'name' => ( is => 'ro', isa => 'Str',        required => 1 );
+has 'ram'  => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
+has 'disk' => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable();
@@ -23,7 +24,7 @@ Net::RackSpace::CloudServers::Flavor - a RackSpace CloudServers Flavor
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 SYNOPSIS
 

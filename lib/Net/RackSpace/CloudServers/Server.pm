@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Server;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Server::VERSION = '0.13';
+    $Net::RackSpace::CloudServers::Server::VERSION = '0.14';
 }
 use warnings;
 use strict;
@@ -13,21 +13,36 @@ use YAML;
 use Net::RackSpace::CloudServers::Image;
 use Carp;
 
-has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
-has 'id'       => ( is => 'ro', isa => 'Int',        required => 1, default => 0 );
+has 'cloudservers' =>
+  ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
+has 'id' => ( is => 'ro', isa => 'Int', required => 1, default => 0 );
 has 'name'     => ( is => 'ro', isa => 'Str',        required => 1 );
 has 'imageid'  => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
 has 'flavorid' => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
-has 'hostid'    => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
-has 'status'    => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
-has 'adminpass' => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
-has 'progress'  => ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
-has 'public_address' =>
-  ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]', required => 1, default => undef );
-has 'private_address' =>
-  ( is => 'ro', isa => 'Maybe[ArrayRef[Str]]', required => 1, default => undef );
-has 'metadata'    => ( is => 'ro', isa => 'Maybe[HashRef]',  required => 1, default => undef );
-has 'personality' => ( is => 'ro', isa => 'Maybe[ArrayRef]', required => 1, default => undef );
+has 'hostid' =>
+  ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'status' =>
+  ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'adminpass' =>
+  ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'progress' =>
+  ( is => 'ro', isa => 'Maybe[Str]', required => 1, default => undef );
+has 'public_address' => (
+    is       => 'ro',
+    isa      => 'Maybe[ArrayRef[Str]]',
+    required => 1,
+    default  => undef
+);
+has 'private_address' => (
+    is       => 'ro',
+    isa      => 'Maybe[ArrayRef[Str]]',
+    required => 1,
+    default  => undef
+);
+has 'metadata' =>
+  ( is => 'ro', isa => 'Maybe[HashRef]', required => 1, default => undef );
+has 'personality' =>
+  ( is => 'ro', isa => 'Maybe[ArrayRef]', required => 1, default => undef );
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable();
@@ -104,7 +119,8 @@ sub create_image {
     );
     my $response = $self->cloudservers->_request($request);
     if ( $response->code != 202 ) {
-        confess 'Unknown error ' . $response->code, "\n", Dump( $response->content );
+        confess 'Unknown error ' . $response->code, "\n",
+          Dump( $response->content );
     }
     my $hash_response = from_json( $response->content );
     if ( !defined $hash_response->{image} ) {
@@ -137,8 +153,11 @@ sub create_server {
                     name     => $self->name,
                     imageId  => int $self->imageid,
                     flavorId => int $self->flavorid,
-                    defined $self->metadata    ? ( metadata    => $self->metadata )    : (),
-                    defined $self->personality ? ( personality => $self->personality ) : (),
+                    defined $self->metadata ? ( metadata => $self->metadata )
+                    : (),
+                    defined $self->personality
+                    ? ( personality => $self->personality )
+                    : (),
                 }
             }
         )
@@ -175,7 +194,7 @@ Net::RackSpace::CloudServers::Server - a RackSpace CloudServers Server instance
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 SYNOPSIS
 

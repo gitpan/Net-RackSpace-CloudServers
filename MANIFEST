@@ -6,8 +6,6 @@ Makefile.PL
 README
 TODO
 dist.ini
-lib/App/CloudServers/Command/create.pm.bak
-lib/App/CloudServers/Command/list.pm.bak
 lib/Net/RackSpace/CloudServers.pm
 lib/Net/RackSpace/CloudServers/Flavor.pm
 lib/Net/RackSpace/CloudServers/Image.pm
@@ -23,7 +21,6 @@ scripts/list_images.pl
 scripts/list_limits.pl
 scripts/list_servers.pl
 scripts/newserver.pl
-scripts/newserver.pl.bak
 scripts/serverinfo.pl
 t/00-load.t
 t/01-author-list.t

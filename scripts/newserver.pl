@@ -4,8 +4,10 @@ use warnings;
 use Net::RackSpace::CloudServers;
 use Net::RackSpace::CloudServers::Server;
 
-my $user = $ENV{'CLOUDSERVERS_USER'} or die "Need CLOUDSERVERS_USER environment variable set";
-my $key  = $ENV{'CLOUDSERVERS_KEY'}  or die "Need CLOUDSERVERS_KEY environment variable set";
+my $user = $ENV{'CLOUDSERVERS_USER'}
+  or die "Need CLOUDSERVERS_USER environment variable set";
+my $key = $ENV{'CLOUDSERVERS_KEY'}
+  or die "Need CLOUDSERVERS_KEY environment variable set";
 
 my $CS = Net::RackSpace::CloudServers->new(
     user => $user,
@@ -29,7 +31,9 @@ my $srv;
         name         => 'perlmfapitest',
         flavorid     => ( grep { $_->ram == 256 } @flavors )[0]->id,
         imageid      => ( grep { $_->name =~ /karmic/ } @images )[0]->id,
-        personality  => [ { path => '/root/test.txt', contents => 'dGVzdCAxMjMK' } ], # "test 123\n"
+        personality =>
+          [ { path => '/root/test.txt', contents => 'dGVzdCAxMjMK' } ]
+        ,    # "test 123\n"
     );
     $srv = $tmp->create_server();
 }
@@ -46,7 +50,8 @@ print "Available at public IP: @{$srv->public_address}\n";
 
 ## unusable until ->status will be ACTIVE, from BUILD
 do {
-    print "Status: ", $srv->status // '?', " progress: ", $srv->progress // '?', "\n";
+    print "Status: ", $srv->status // '?', " progress: ", $srv->progress // '?',
+      "\n";
     my @tmpservers = $CS->get_server_detail();
     $srv = ( grep { $_->name eq 'perlmfapitest' } @tmpservers )[0];
     sleep 2 if ( ( $srv->status // '' ) ne 'ACTIVE' );

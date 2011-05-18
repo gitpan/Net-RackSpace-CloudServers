@@ -5,7 +5,8 @@ use warnings;
 use Test::More;
 
 plan skip_all => 'author tests run only if $ENV{CLOUDSERVERS_AUTHOR_TESTS} set'
-  if ( !defined $ENV{'CLOUDSERVERS_AUTHOR_TESTS'} || !$ENV{'CLOUDSERVERS_AUTHOR_TESTS'} );
+  if ( !defined $ENV{'CLOUDSERVERS_AUTHOR_TESTS'}
+    || !$ENV{'CLOUDSERVERS_AUTHOR_TESTS'} );
 plan 'no_plan';
 
 sub not_in_file_ok {
@@ -26,7 +27,8 @@ sub not_in_file_ok {
     if (%violated) {
         fail("$filename contains boilerplate text");
         diag "$_ appears on lines @{$violated{$_}}" for keys %violated;
-    } else {
+    }
+    else {
         pass("$filename contains no boilerplate text");
     }
 }
@@ -34,7 +36,7 @@ sub not_in_file_ok {
 sub module_boilerplate_ok {
     my ($module) = @_;
     not_in_file_ok(
-        $module                    => 'the great new $MODULENAME' => qr/ - The great new /,
+        $module => 'the great new $MODULENAME' => qr/ - The great new /,
         'boilerplate description'  => qr/Quick summary of what the module/,
         'stub function definition' => qr/function[12]/,
     );

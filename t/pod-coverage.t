@@ -4,12 +4,14 @@ use warnings;
 use Test::More;
 
 plan skip_all => 'author tests run only if $ENV{CLOUDSERVERS_AUTHOR_TESTS} set'
-  if ( !defined $ENV{'CLOUDSERVERS_AUTHOR_TESTS'} || !$ENV{'CLOUDSERVERS_AUTHOR_TESTS'} );
+  if ( !defined $ENV{'CLOUDSERVERS_AUTHOR_TESTS'}
+    || !$ENV{'CLOUDSERVERS_AUTHOR_TESTS'} );
 
 # Ensure a recent version of Test::Pod::Coverage
 my $min_tpc = 1.08;
 eval "use Test::Pod::Coverage $min_tpc";
-plan skip_all => "Test::Pod::Coverage $min_tpc required for testing POD coverage"
+plan skip_all =>
+  "Test::Pod::Coverage $min_tpc required for testing POD coverage"
   if $@;
 
 # Test::Pod::Coverage doesn't require a minimum Pod::Coverage version,

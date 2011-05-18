@@ -6,8 +6,10 @@ use Net::RackSpace::CloudServers;
 use Net::RackSpace::CloudServers::Server;
 use Net::RackSpace::CloudServers::Image;
 
-my $user = $ENV{'CLOUDSERVERS_USER'} or die "Need CLOUDSERVERS_USER environment variable set";
-my $key  = $ENV{'CLOUDSERVERS_KEY'}  or die "Need CLOUDSERVERS_KEY environment variable set";
+my $user = $ENV{'CLOUDSERVERS_USER'}
+  or die "Need CLOUDSERVERS_USER environment variable set";
+my $key = $ENV{'CLOUDSERVERS_KEY'}
+  or die "Need CLOUDSERVERS_KEY environment variable set";
 
 my $serverid = shift or die "$0: need server id\n";
 my $imgname = "@ARGV";

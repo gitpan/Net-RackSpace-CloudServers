@@ -1,21 +1,22 @@
 package Net::RackSpace::CloudServers::Image;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Image::VERSION = '0.13';
+    $Net::RackSpace::CloudServers::Image::VERSION = '0.14';
 }
 use warnings;
 use strict;
 use Any::Moose;
 use Carp;
 
-has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
-has 'id'           => ( is => 'ro', isa => 'Int',                          required => 1 );
-has 'name'         => ( is => 'ro', isa => 'Str',                          required => 1 );
-has 'serverid'     => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
-has 'updated'      => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'created'      => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'status'       => ( is => 'ro', isa => 'Maybe[Str]',                   required => 1 );
-has 'progress'     => ( is => 'ro', isa => 'Maybe[Int]',                   required => 1 );
+has 'cloudservers' =>
+  ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
+has 'id'       => ( is => 'ro', isa => 'Int',        required => 1 );
+has 'name'     => ( is => 'ro', isa => 'Str',        required => 1 );
+has 'serverid' => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
+has 'updated'  => ( is => 'ro', isa => 'Maybe[Str]', required => 1 );
+has 'created'  => ( is => 'ro', isa => 'Maybe[Str]', required => 1 );
+has 'status'   => ( is => 'ro', isa => 'Maybe[Str]', required => 1 );
+has 'progress' => ( is => 'ro', isa => 'Maybe[Int]', required => 1 );
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable();
@@ -26,7 +27,7 @@ Net::RackSpace::CloudServers::Image - a RackSpace CloudServers Image
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 SYNOPSIS
 

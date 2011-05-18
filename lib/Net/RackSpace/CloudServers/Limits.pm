@@ -1,7 +1,7 @@
 package Net::RackSpace::CloudServers::Limits;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::Limits::VERSION = '0.13';
+    $Net::RackSpace::CloudServers::Limits::VERSION = '0.14';
 }
 use warnings;
 use strict;
@@ -12,9 +12,10 @@ use JSON;
 use YAML;
 use Carp;
 
-has 'cloudservers' => ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
-has 'totalramsize' => ( is => 'rw', isa => 'Int', );
-has 'maxipgroups'  => ( is => 'rw', isa => 'Int', );
+has 'cloudservers' =>
+  ( is => 'rw', isa => 'Net::RackSpace::CloudServers', required => 1 );
+has 'totalramsize'      => ( is => 'rw', isa => 'Int', );
+has 'maxipgroups'       => ( is => 'rw', isa => 'Int', );
 has 'maxipgroupmembers' => ( is => 'rw', isa => 'Int', );
 has 'rate'              => ( is => 'rw', isa => 'Maybe[ArrayRef]', );
 
@@ -41,11 +42,13 @@ sub refresh {
     warn Dump($hr) if $DEBUG;
 
 #{"limits":{"absolute":{"maxTotalRAMSize":51200,"maxIPGroupMembers":25,"maxNumServers":25,"maxIPGroups":25},"rate":[{"value":50,"unit":"DAY","verb":"POST","remaining":50,"URI":"\/servers*","resetTime":1247769469,"regex":"^\/servers"},{"value":10,"unit":"MINUTE","verb":"POST","remaining":10,"URI":"*","resetTime":1247769469,"regex":".*"},{"value":600,"unit":"MINUTE","verb":"DELETE","remaining":600,"URI":"*","resetTime":1247769469,"regex":".*"},{"value":10,"unit":"MINUTE","verb":"PUT","remaining":10,"URI":"*","resetTime":1247769469,"regex":".*"},{"value":3,"unit":"MINUTE","verb":"GET","remaining":3,"URI":"*changes-since*","resetTime":1247769469,"regex":"changes-since"}]}}
-    confess 'response does not contain key "limits"' unless defined $hr->{limits};
+    confess 'response does not contain key "limits"'
+      unless defined $hr->{limits};
     confess 'response does not contain hashref of "limits"'
       unless ( ref $hr->{limits} eq 'HASH' );
 
-    confess 'response "limits" does not contain key "rate"' unless defined $hr->{limits}->{rate};
+    confess 'response "limits" does not contain key "rate"'
+      unless defined $hr->{limits}->{rate};
     confess 'response "limits", key "rate" is not an arrayref'
       unless ( ref $hr->{limits}->{rate} eq 'ARRAY' );
     $self->rate( $hr->{limits}->{rate} );
@@ -54,15 +57,19 @@ sub refresh {
       unless defined $hr->{limits}->{absolute};
     confess 'response "limits", key "absolute" is not an hashref'
       unless ( ref $hr->{limits}->{absolute} eq 'HASH' );
-    confess 'response "limits", key "absolute" does not contain key "maxTotalRAMSize"'
+    confess
+      'response "limits", key "absolute" does not contain key "maxTotalRAMSize"'
       unless ( defined $hr->{limits}->{absolute}->{"maxTotalRAMSize"} );
     $self->totalramsize( $hr->{limits}->{absolute}->{"maxTotalRAMSize"} );
-    confess 'response "limits", key "absolute" does not contain key "maxIPGroups"'
+    confess
+      'response "limits", key "absolute" does not contain key "maxIPGroups"'
       unless ( defined $hr->{limits}->{absolute}->{"maxIPGroups"} );
     $self->maxipgroups( $hr->{limits}->{absolute}->{"maxIPGroups"} );
-    confess 'response "limits", key "absolute" does not contain key "maxIPGroupMembers"'
+    confess
+'response "limits", key "absolute" does not contain key "maxIPGroupMembers"'
       unless ( defined $hr->{limits}->{absolute}->{"maxIPGroupMembers"} );
-    $self->maxipgroupmembers( $hr->{limits}->{absolute}->{"maxIPGroupMembers"} );
+    $self->maxipgroupmembers(
+        $hr->{limits}->{absolute}->{"maxIPGroupMembers"} );
     return $self;
 }
 
@@ -72,7 +79,7 @@ Net::RackSpace::CloudServers::Limits - a RackSpace CloudServers Limits instance
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 SYNOPSIS
 

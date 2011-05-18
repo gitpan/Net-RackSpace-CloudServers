@@ -4,7 +4,7 @@ use warnings;
 
 BEGIN { require 5.008_008; }
 
-use ExtUtils::MakeMaker 6.31;
+use ExtUtils::MakeMaker 6.30;
 
 
 
@@ -13,7 +13,7 @@ my %WriteMakefileArgs = (
   'AUTHOR' => 'Marco Fontani',
   'BUILD_REQUIRES' => {},
   'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.31'
+    'ExtUtils::MakeMaker' => '6.30'
   },
   'DISTNAME' => 'Net-RackSpace-CloudServers',
   'EXE_FILES' => [],
@@ -28,7 +28,7 @@ my %WriteMakefileArgs = (
     'LWP::UserAgent::Determined' => '0',
     'YAML' => '0'
   },
-  'VERSION' => '0.13',
+  'VERSION' => '0.14',
   'test' => {
     'TESTS' => 't/*.t'
   }

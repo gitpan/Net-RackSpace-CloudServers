@@ -1,11 +1,12 @@
 package Net::RackSpace::CloudServers;
 
 BEGIN {
-    $Net::RackSpace::CloudServers::VERSION = '0.13';
+    $Net::RackSpace::CloudServers::VERSION = '0.14';
 }
 use warnings;
 use strict;
 use Any::Moose;
+use Any::Moose ('::Util::TypeConstraints');
 use Net::RackSpace::CloudServers::Flavor;
 use Net::RackSpace::CloudServers::Server;
 use Net::RackSpace::CloudServers::Image;
@@ -18,10 +19,24 @@ use Carp;
 
 our $DEBUG = 0;
 
-has 'user'    => ( is => 'ro', isa => 'Str',            required => 1 );
-has 'key'     => ( is => 'ro', isa => 'Str',            required => 1 );
-has 'timeout' => ( is => 'ro', isa => 'Num',            required => 0, default => 30 );
-has 'ua'      => ( is => 'rw', isa => 'LWP::UserAgent', required => 0 );
+has 'user'    => ( is => 'ro', isa => 'Str', required => 1 );
+has 'key'     => ( is => 'ro', isa => 'Str', required => 1 );
+has 'timeout' => ( is => 'ro', isa => 'Num', required => 0, default => 30 );
+has 'ua' => ( is => 'rw', isa => 'LWP::UserAgent', required => 0 );
+
+# This module currently supports only US and UK
+subtype ValidLocation => as 'Str' => where { $_ eq 'US' or $_ eq 'UK' };
+
+# The two locations have different API endpoints
+our %api_endpoint_by_location = (
+    US => 'https://auth.api.rackspacecloud.com/v1.0',
+    UK => 'https://lon.auth.api.rackspacecloud.com/v1.0',
+);
+
+# So this module can work on either the US or the UK versions
+# of the API, defaulting to the current default
+has 'location' =>
+  ( is => 'rw', isa => 'ValidLocation', required => 1, default => 'US' );
 
 has 'limits' => (
     is       => 'rw',
@@ -30,7 +45,8 @@ has 'limits' => (
     required => 1,
     default  => sub {
         my ($self) = @_;
-        return Net::RackSpace::CloudServers::Limits->new( cloudservers => $self, );
+        return Net::RackSpace::CloudServers::Limits->new( cloudservers => $self,
+        );
     }
 );
 
@@ -65,7 +81,7 @@ sub BUILD {
         )
     );
     my $http_codes_hr = $ua->codes_to_determinate();
-    $http_codes_hr->{422} = 1;    # used by cloudfiles for upload data corruption
+    $http_codes_hr->{422} = 1;   # used by cloudfiles for upload data corruption
     $ua->timeout( $self->timeout );
     $ua->env_proxy;
     $self->ua($ua);
@@ -76,7 +92,7 @@ sub _authenticate {
     my $self    = shift;
     my $request = HTTP::Request->new(
         'GET',
-        'https://auth.api.rackspacecloud.com/v1.0',
+        $api_endpoint_by_location{ $self->location },
         [
             'X-Auth-User' => $self->user,
             'X-Auth-Key'  => $self->key,
@@ -143,10 +159,12 @@ sub _request {
         my $when = $response->header('Reply-After');
         if ( !defined $when ) {
             $when = 'in about 10 mins';
-        } else {
+        }
+        else {
             $when = 'at ' . $when;
         }
-        confess "Cannot execute request as rate control limit exceeded; retry ", $when;
+        confess "Cannot execute request as rate control limit exceeded; retry ",
+          $when;
     }
 
     return $response;
@@ -364,13 +382,14 @@ Net::RackSpace::CloudServers - Interface to RackSpace CloudServers via API
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 SYNOPSIS
 
   use Net::RackSpace::CloudServers;
   my $cs = Net::RackSpace::CloudServers->new(
-    user => 'myusername', key => 'mysecretkey'
+    user => 'myusername', key => 'mysecretkey',
+    # location => 'UK',
   );
   # list my servers;
   my @servers = $cs->get_server;
@@ -385,8 +404,12 @@ version 0.13
 The constructor logs you into CloudServers:
 
   my $cs = Net::RackSpace::CloudServers->new(
-    user => 'myusername', key => 'mysecretkey'
+    user => 'myusername', key => 'mysecretkey',
+    # location => 'US',
   );
+
+The C<location> parameter can be either C<US> or C<UK>, as the APIs have the same interface and just
+different endpoints. This is all handled transparently. The default is to use the C<US> API endpoint.
 
 =head2 get_server
 
